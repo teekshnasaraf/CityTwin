@@ -25,8 +25,12 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "CITYTWIN"
     ENVIRONMENT: str = "development"
     DATABASE_URL: str = Field(
-        ...,
+        default="postgresql+psycopg://postgres:postgres@localhost:5432/citytwin",
         description="PostgreSQL connection string with psycopg driver",
+    )
+    GROQ_API_KEY: str = Field(
+        default="",
+        description="Groq Cloud API Key for LLM-powered urban predictive intelligence",
     )
     HOST: str = "0.0.0.0"
     PORT: int = 8000
