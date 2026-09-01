@@ -259,6 +259,42 @@ PostGIS stores spatial data:
 -   XGBoost or LightGBM
 -   SHAP where explainability is needed
 
+The initial traffic prediction pipeline is:
+
+``` text
+TrafficStateRecord
+    ↓
+Feature Engineering
+    ↓
+ML Training Samples
+    ↓
+Candidate Regression Models
+    ↓
+Evaluation
+    ↓
+Best Model Selection
+    ↓
+Traffic Prediction
+```
+
+The traffic-volume regression target is future `vehicle_count` for the same
+road at the default 15-minute prediction horizon. Features come from the
+centralized feature-engineering layer. Candidate models use the same
+chronological train/test split and are evaluated on the same test set using
+MAE, RMSE, and R². MAE is the primary model-selection metric; the selected
+model is then used for prediction.
+
+Initial candidate models:
+
+-   Linear Regression
+-   Random Forest Regressor
+-   XGBoost Regressor
+
+The current synthetic MODELLED traffic data is used to validate the ML
+pipeline and model-selection implementation. These synthetic metrics must
+not be interpreted as real-world traffic accuracy. Meaningful evaluation
+requires future real or historical traffic data.
+
 ## Deployment
 
 ### Local Development
@@ -906,6 +942,11 @@ Historical traffic
         ↓
 Future traffic
 ```
+
+The initial traffic prediction implementation compares Linear Regression,
+Random Forest Regressor, and XGBoost Regressor using the centralized feature
+schema and a shared chronological split. This step implements only the
+"AI predicts" portion of CITYTWIN.
 
 ## Pollution estimation
 
