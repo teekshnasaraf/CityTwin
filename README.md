@@ -654,6 +654,40 @@ Where available, prefer city-specific official feeds for:
 The ingestion layer should support different providers without changing
 the database schema.
 
+### Victoria Historical Traffic Observation Layer
+
+Victoria telemetry data enters CITYTWIN through an intermediate
+`HistoricalTrafficObservation` layer:
+
+``` text
+Victoria sensor files
+    ↓
+15-minute site + heading aggregation
+    ↓
+HistoricalTrafficObservation
+    ↓
+Future OSM/PostGIS enrichment
+    ↓
+TrafficStateRecord
+```
+
+The Victoria source provides traffic volume, vehicle classification, and
+categorical speed-bin information. `telemetry_sites.csv` provides sensor
+coordinates and descriptions. Raw traffic rows are aggregated across vehicle
+classes and speed bins by site, heading, and exact 15-minute timestamp; rows
+are not aggregated across headings.
+
+Victoria site IDs identify telemetry sensors, not OSM road IDs. The
+observation layer preserves those IDs and coordinates without performing OSM
+matching. Road capacity, lanes, road length, measured average speed, weather,
+and congestion are intentionally not fabricated. Speed bins remain source
+information and are not converted into measured average speed.
+
+Victoria timestamps are interpreted as local `Australia/Melbourne` time and
+are stored with that timezone rather than being silently treated as UTC. The
+observations retain `HISTORICAL` provenance and remain compatible with the
+future target of vehicle volume at the exact same site and heading at T+15.
+
 ------------------------------------------------------------------------
 
 # 9. Data Ingestion Architecture
