@@ -11,3 +11,4 @@ osmnx>=2.1.0
 geopandas>=1.0.0
 networkx>=3.2
 shapely>=2.0.0
+tzdata>=2024.1
