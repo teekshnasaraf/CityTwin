@@ -339,6 +339,76 @@ engine.
 
 ------------------------------------------------------------------------
 
+# Backend & Database Foundation (Completed)
+
+The foundational database and backend services are configured and operational:
+
+- **Database Engine**: PostgreSQL 18 with PostGIS 3.6 spatial extension enabled.
+- **Database Name**: `citytwin`
+- **Backend Framework**: FastAPI (Python 3) with Uvicorn ASGI server.
+- **ORM & Driver**: SQLAlchemy 2.0+ with `psycopg` 3.x driver (`postgresql+psycopg://`).
+- **Configuration**: Pydantic Settings and Python-Dotenv loading from `CITYTWIN/.env`.
+
+### Environment Configuration
+
+Copy the configuration template to create your local `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Configure `DATABASE_URL` in `.env` with your local PostgreSQL credentials:
+
+```env
+DATABASE_URL=postgresql+psycopg://postgres:<PASSWORD>@localhost:5432/citytwin
+ENVIRONMENT=development
+HOST=0.0.0.0
+PORT=8000
+```
+
+### Installation
+
+Install the required backend foundation packages:
+
+```bash
+pip install -r backend/requirements.txt
+```
+
+### Running the Backend
+
+From the project root:
+
+```bash
+uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Or from the `backend/` directory:
+
+```bash
+cd backend
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+### Health & Verification Endpoints
+
+- `GET /`: Application status check
+  ```json
+  {"project": "CITYTWIN", "status": "running"}
+  ```
+- `GET /health`: Service availability health check
+  ```json
+  {"status": "healthy"}
+  ```
+- `GET /database`: Database connectivity verification (executes `SELECT version();`)
+  ```json
+  {"database": "connected", "postgresql": "PostgreSQL 18..."}
+  ```
+- `GET /docs`: Interactive Swagger API documentation
+
+*Note: OpenStreetMap (OSM) data ingestion and simulation engines are scheduled for upcoming project milestones.*
+
+------------------------------------------------------------------------
+
 # 6. Database Architecture
 
 The database should be divided conceptually into four groups.
