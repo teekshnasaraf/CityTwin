@@ -1,36 +1,44 @@
 # Environment variables
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
-# Dependencies
-node_modules/
+# Virtual Environments
+.venv/
+backend/.venv/
+venv/
+env/
+ENV/
+
+# Python bytecode and cache
 __pycache__/
 *.pyc
-.venv/
-venv/
-
-# Build files
-.next/
-dist/
-build/
-
-# Python
+*.pyo
+*.pyd
 .pytest_cache/
 .mypy_cache/
+.coverage
+htmlcov/
 
-# OS
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Frontend
+node_modules/
+.next/
+
+# OS and IDE files
 .DS_Store
 Thumbs.db
-
-# IDE
 .vscode/
 .idea/
 
-# Logs
+# Application logs
 *.log
 
-# Large/generated data
+# Large / generated data
 data/raw/
 data/processed/
 simulation/outputs/
