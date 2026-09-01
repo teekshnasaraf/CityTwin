@@ -167,6 +167,33 @@ data from synthetic/modelled dynamic data and future scenarios.
                Map           Scenario Builder    Results
 ```
 
+### Deployment Architecture
+
+``` text
+                                                 DEVELOPMENT
+
+                                 Docker / Local Environment
+                                                            ↓
+                                        PostgreSQL + PostGIS
+                                                            ↓
+                                                     FastAPI
+                                                            ↓
+                                                 React/Next.js
+
+
+                                                    PRODUCTION
+
+                                        React / Next.js Frontend
+                                                            ↓
+                                                        Vercel
+                                                            ↓
+                                             FastAPI Backend
+                                                            ↓
+                                                        Render
+                                                            ↓
+                                         PostgreSQL + PostGIS
+```
+
 ------------------------------------------------------------------------
 
 # 5. Technology Stack
@@ -234,8 +261,45 @@ PostGIS stores spatial data:
 
 ## Deployment
 
+### Local Development
+
 -   Docker
--   Cloud infrastructure later
+-   PostgreSQL + PostGIS containerized for consistent local development
+
+Docker is used primarily to provide a reproducible development environment
+across team members and remains part of the development/tooling architecture.
+
+### Production Deployment
+
+-   Vercel — frontend hosting
+-   Render — FastAPI backend hosting
+-   PostgreSQL + PostGIS — production database
+
+Docker is not the production hosting platform for the frontend or backend;
+Vercel and Render provide those deployment targets while PostgreSQL + PostGIS
+remains the database layer.
+
+# Deployment Architecture
+
+CITYTWIN uses separate deployment targets for the frontend and backend.
+
+Frontend:
+React/Next.js → Vercel
+
+Backend:
+Python/FastAPI → Render
+
+Database:
+PostgreSQL + PostGIS
+
+Local development:
+Docker → PostgreSQL/PostGIS and supporting services
+
+Separating frontend and backend deployment allows the team to develop and
+deploy each layer independently while maintaining the same application
+architecture. Vercel and Render are hosting choices; they do not replace
+FastAPI, PostgreSQL, PostGIS, OSMnx, NetworkX, ML models or the simulation
+engine.
 
 ------------------------------------------------------------------------
 
@@ -1095,6 +1159,9 @@ CITYTWIN/
 └── README.md
 ```
 
+The `docker/docker-compose.yml` file is intended for local development and
+reproducible service setup.
+
 ------------------------------------------------------------------------
 
 # 21. Development Roadmap
@@ -1197,6 +1264,9 @@ Add:
 -   charts
 -   recommendation cards
 -   data freshness indicators
+-   Vercel frontend deployment
+-   Render FastAPI backend deployment
+-   PostgreSQL + PostGIS production database
 
 ## Phase 10 --- Advanced Features
 
