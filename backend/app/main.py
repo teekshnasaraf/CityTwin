@@ -7,9 +7,11 @@ from sqlalchemy.orm import Session
 try:
     from app.config import settings
     from app.database import get_db
+    from app.api.ingestion import router as ingestion_router
 except ImportError:
     from .config import settings
     from .database import get_db
+    from .api.ingestion import router as ingestion_router
 
 # Configure logger
 logger = logging.getLogger("citytwin.api")
@@ -29,6 +31,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount API routers
+app.include_router(ingestion_router)
 
 
 @app.get("/", tags=["Health"])

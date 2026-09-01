@@ -25,11 +25,14 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "CITYTWIN"
     ENVIRONMENT: str = "development"
     DATABASE_URL: str = Field(
-        default="postgresql+psycopg://postgres:@localhost:5432/citytwin",
+        ...,
         description="PostgreSQL connection string with psycopg driver",
     )
     HOST: str = "0.0.0.0"
     PORT: int = 8000
+    OVERPASS_URL: str = "https://overpass-api.de/api"
+    OVERPASS_FALLBACK_URLS: str = "https://overpass.kumi.systems/api,https://maps.mail.ru/osm/tools/overpass/api,https://overpass.openstreetmap.ru/api"
+    OVERPASS_REQUEST_TIMEOUT: int = 180
 
     model_config = SettingsConfigDict(
         env_file=(str(env_file_root), str(env_file_backend), ".env"),

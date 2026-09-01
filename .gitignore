@@ -46,3 +46,6 @@ simulation/outputs/
 # ML artifacts
 models/trained/
 models/artifacts/
+
+# OSMnx / geocoder cache
+cache/
