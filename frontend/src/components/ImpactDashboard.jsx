@@ -79,52 +79,6 @@ export default function ImpactDashboard({ simulationData }) {
           </div>
         ))}
       </div>
-
-      {simulationData.ai_analysis && (
-        <div style={{ marginTop: '32px', background: 'rgba(15, 23, 42, 0.6)', border: '1px solid #334155', borderRadius: '12px', padding: '24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', borderBottom: '1px solid #334155', paddingBottom: '12px' }}>
-            <TrendingUp size={20} color="#10b981" />
-            <span style={{ fontSize: '15px', fontWeight: '700', letterSpacing: '0.5px', color: '#10b981' }}>
-              GROQ AI URBAN IMPACT ANALYSIS
-            </span>
-            <span style={{ marginLeft: 'auto', fontSize: '12px', color: '#94a3b8' }}>
-              {simulationData.ai_analysis.status === 'AVAILABLE' ? `Powered by ${simulationData.ai_analysis.model_used || 'Groq'}` : 'Analysis Unavailable'}
-            </span>
-          </div>
-
-          {simulationData.ai_analysis.status === 'AVAILABLE' && simulationData.ai_analysis.analysis ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div>
-                <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 'bold' }}>Summary</div>
-                <div style={{ fontSize: '14px', color: '#f1f5f9' }}>{simulationData.ai_analysis.analysis.summary}</div>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                <div>
-                  <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 'bold' }}>Traffic Impact</div>
-                  <div style={{ fontSize: '14px', color: '#cbd5e1' }}>{simulationData.ai_analysis.analysis.traffic_impact}</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 'bold' }}>Travel-Time Impact</div>
-                  <div style={{ fontSize: '14px', color: '#cbd5e1' }}>{simulationData.ai_analysis.analysis.travel_time_impact}</div>
-                </div>
-              </div>
-              <div>
-                <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 'bold' }}>Key Trade-off</div>
-                <div style={{ fontSize: '14px', color: '#f59e0b' }}>{simulationData.ai_analysis.analysis.key_tradeoff}</div>
-              </div>
-              <div style={{ background: 'rgba(16, 185, 129, 0.1)', borderLeft: '3px solid #10b981', padding: '12px', borderRadius: '4px' }}>
-                <div style={{ fontSize: '12px', color: '#10b981', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 'bold' }}>Recommendation</div>
-                <div style={{ fontSize: '14px', color: '#f1f5f9', marginBottom: '8px' }}>{simulationData.ai_analysis.analysis.recommendation}</div>
-                <div style={{ fontSize: '12px', color: '#cbd5e1', fontStyle: 'italic' }}>Reasoning: {simulationData.ai_analysis.analysis.reasoning}</div>
-              </div>
-            </div>
-          ) : (
-            <div style={{ fontSize: '14px', color: '#94a3b8' }}>
-              {simulationData.ai_analysis.reason || "AI reasoning is currently unavailable. Displaying raw simulation values only."}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }
