@@ -2,6 +2,7 @@
 Simulation & Decision Intelligence API Router.
 Triggers cascading Digital Twin simulation runs and exposes In-Memory Spatial Graph RAG endpoints.
 """
+import logging
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -23,6 +24,7 @@ except ImportError:
     from ..services.graph_store import graph_store
     from ..ai.traffic_model import GroqLLMPredictor
 
+logger = logging.getLogger("citytwin.api.simulation")
 router = APIRouter(prefix="/api/v1/simulations", tags=["Simulations & Graph Store"])
 
 
@@ -63,6 +65,16 @@ def run_simulation(payload: SimulationRunRequest, db: Session = Depends(get_db))
         traffic_factor=payload.traffic_factor,
         weather_factor=payload.weather_factor,
     )
+
+    try:
+        res["ai_analysis"] = GroqLLMPredictor().analyze_simulation(res)
+    except Exception as exc:
+        logger.warning("Optional Groq simulation analysis unavailable (%s)", type(exc).__name__)
+        res["ai_analysis"] = {
+            "status": "UNAVAILABLE",
+            "analysis": None,
+            "reason": "Groq simulation analysis failed; simulation results are unchanged.",
+        }
 
     try:
         scenario = db.query(Scenario).filter(Scenario.city_id == payload.city_id).first()

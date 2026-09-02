@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layers, AlertTriangle, Navigation, Hospital, ShieldAlert, Truck } from 'lucide-react';
+import { Layers } from 'lucide-react';
 
 export default function CityMap({ activeRoad, isSimulated, simulationData }) {
   const [activeLayers, setActiveLayers] = useState({
